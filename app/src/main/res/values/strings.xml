@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">RideMe</string>
+    <string name="create_account">CREATE ACCOUNT</string>
+    <string name="enter_first_name">First Name</string>
+    <string name="enter_second_name">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="continue_text">Continue</string>
+
 </resources>

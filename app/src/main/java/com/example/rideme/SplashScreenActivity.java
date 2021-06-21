@@ -29,6 +29,19 @@ public class SplashScreenActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener listener;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        delaySplashScreen();
+    }
+
+    @Override
+    protected void onStop() {
+        if(firebaseAuth != null && listener != null)
+            firebaseAuth.removeAuthStateListener(listener);
+        super.onStop();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -44,7 +57,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         listener = myFirebaseAuth -> {
             FirebaseUser user = myFirebaseAuth.getCurrentUser();
             if(user != null)
-                delaySplashScreen();
+                Toast.makeText(this, "Welcome:" +user.getUid(), Toast.LENGTH_SHORT).show();
             else
                 showLoginLayout();
         };
@@ -61,14 +74,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         .createSignInIntentBuilder()
         .setAuthMethodPickerLayout(authMethodPickerLayout)
         .setIsSmartLockEnabled(false)
+                .setTheme(R.style.LoginTheme)
         .setAvailableProviders(providers)
         .build(),LOGIN_REQUEST_CODE);
     }
 
     private void delaySplashScreen() {
-        Completable.timer(5, TimeUnit.SECONDS,
+        Completable.timer(3, TimeUnit.SECONDS,
                 AndroidSchedulers.mainThread())
-                .subscribe(() -> Toast.makeText(SplashScreenActivity.this,"Splash Screen done!!!",Toast.LENGTH_SHORT).show());
+                .subscribe(() ->
+                        firebaseAuth.addAuthStateListener(listener)
+
+                        );
     }
 
     @Override

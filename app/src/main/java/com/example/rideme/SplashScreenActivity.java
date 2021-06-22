@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.rideme.Model.DriverInfoModel;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -151,6 +152,12 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
             else
             {
+                DriverInfoModel model = new DriverInfoModel();
+                model.setFirstName(edt_first_name.getText().toString());
+                model.setLastName(edt_last_name.getText().toString());
+                model.setPhoneNumber(edt_phone.getText().toString());
+                model.setRating(0.0);
+
 
             }
         });

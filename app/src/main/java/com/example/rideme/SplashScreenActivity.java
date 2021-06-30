@@ -18,6 +18,8 @@ import com.example.rideme.Model.DriverInfoModel;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,6 +56,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         delaySplashScreen();
+        //showRegisterLayout();
     }
 
     @Override
@@ -64,7 +67,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)   {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         init();
@@ -158,7 +161,17 @@ public class SplashScreenActivity extends AppCompatActivity {
                 model.setPhoneNumber(edt_phone.getText().toString());
                 model.setRating(0.0);
 
-
+                driverInfoRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .setValue(model)
+                        .addOnFailureListener(e ->
+                        {
+                            dialog.dismiss();
+                            Toast.makeText(SplashScreenActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(SplashScreenActivity.this, "Register Successfully!", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        });
             }
         });
     }
